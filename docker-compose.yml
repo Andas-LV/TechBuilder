@@ -4,6 +4,7 @@ services:
     build: .
     ports:
       - "80:8000"
+      - "443:8000"
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - PORT=${PORT}

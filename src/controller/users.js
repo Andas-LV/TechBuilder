@@ -23,17 +23,17 @@ export async function getUserMe(req, res) {
 
 export async function updateUserMe(req, res) {
     try {
-        const { username, email } = req.body;
+        const { username, phone } = req.body;
 
-        if (email || username) {
-            const existingUser = await checkUserExists({ email, username, excludeUserId: req.user.id });
+        if (phone || username) {
+            const existingUser = await checkUserExists({ phone, username, excludeUserId: req.user.id });
 
             if (existingUser) {
-                return res.status(400).json({ error: 'Email or username already taken' });
+                return res.status(400).json({ error: 'Phone or username already taken' });
             }
         }
 
-        const updatedUser = await updateUser(req.user.id, { ...(username && { username }), ...(email && { email }) });
+        const updatedUser = await updateUser(req.user.id, { ...(username && { username }), ...(phone && { phone }) });
 
         res.json(updatedUser);
     } catch (error) {

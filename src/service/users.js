@@ -11,7 +11,7 @@ export async function fetchUserById(userId) {
         where: { id: userId },
         select: {
             id: true,
-            email: true,
+            phone: true,
             username: true,
             avatarUrl: true,
             updatedAt: true,
@@ -19,11 +19,11 @@ export async function fetchUserById(userId) {
     });
 }
 
-export async function checkUserExists({ email, username, excludeUserId }) {
+export async function checkUserExists({ phone, username, excludeUserId }) {
     return prisma.user.findFirst({
         where: {
             OR: [
-                email ? { email } : {},
+                phone ? { phone } : {},
                 username ? { username } : {},
             ],
             NOT: { id: excludeUserId },
@@ -37,7 +37,7 @@ export async function updateUser(userId, data) {
         data,
         select: {
             id: true,
-            email: true,
+            phone: true,
             username: true,
             createdAt: true,
             updatedAt: true,
