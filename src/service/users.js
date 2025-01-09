@@ -14,6 +14,7 @@ export async function fetchUserById(userId) {
             phone: true,
             username: true,
             avatarUrl: true,
+            role: true,
             updatedAt: true,
         },
     });
@@ -39,8 +40,19 @@ export async function updateUser(userId, data) {
             id: true,
             phone: true,
             username: true,
+            role: true,
             createdAt: true,
             updatedAt: true,
+        },
+    });
+}
+
+export async function updateUserRole(userId, role) {
+    return prisma.user.update({
+        where: { id: userId },
+        role,
+        select: {
+            role: true
         },
     });
 }

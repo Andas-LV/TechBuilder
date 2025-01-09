@@ -10,7 +10,7 @@ router.use(authenticateToken)
 
 router.get('/me', getUserMe);
 
-router.patch('/me', updateUserMe);
+router.patch('/me/update', updateUserMe);
 
 router.patch('/me/avatar', upload.single('avatar'), uploadAvatar);
 

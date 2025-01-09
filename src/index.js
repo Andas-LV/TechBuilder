@@ -8,8 +8,9 @@ import { userRouter } from "./routes/users.js";
 import { carRouter } from "./routes/cars.js";
 
 const app = express();
-const PORT = process.env.PORT || 8000;
-const origins = process.env.CLIENT_URL || "*"
+const PORT = process.env.PORT;
+const LOCALHOST = process.env.LOCALHOST;
+const origins = process.env.CLIENT_URL || "*";
 const httpServer = createServer(app);
 
 app.use(cors({
@@ -24,5 +25,5 @@ app.use('/user', userRouter);
 app.use('/cars', carRouter);
 
 httpServer.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`Server running on port ${PORT}, open ${LOCALHOST}`);
 });

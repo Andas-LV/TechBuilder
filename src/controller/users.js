@@ -5,6 +5,7 @@ import {
     uploadAvatarToS3,
     deleteOldAvatar,
 } from '../service/users.js';
+import { Roles } from '../utils/consts.js';
 
 export async function getUserMe(req, res) {
     try {
@@ -23,7 +24,17 @@ export async function getUserMe(req, res) {
 
 export async function updateUserMe(req, res) {
     try {
-        const { username, phone } = req.body;
+        const { username, phone, role  } = req.body;
+
+        if (role) {
+            if (!['ADMIN', 'SUPERADMIN'].includes(req.user.role)) {
+                return res.status(403).json({ error: 'Permission denied to update role' });
+            }
+
+            if (!Roles.includes(role)) {
+                return res.status(400).json({ error: 'Invalid role' });
+            }
+        }
 
         if (phone || username) {
             const existingUser = await checkUserExists({ phone, username, excludeUserId: req.user.id });
@@ -33,7 +44,14 @@ export async function updateUserMe(req, res) {
             }
         }
 
-        const updatedUser = await updateUser(req.user.id, { ...(username && { username }), ...(phone && { phone }) });
+        const updatedUser = await updateUser(
+            req.user.id,
+            {
+                ...(username && { username }),
+                ...(phone && { phone }),
+                ...(role && { role }),
+            }
+        );
 
         res.json(updatedUser);
     } catch (error) {
